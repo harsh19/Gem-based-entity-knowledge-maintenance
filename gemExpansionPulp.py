@@ -8,61 +8,13 @@ from nltk.corpus import stopwords
 from collections import Counter
 import string
 import math
-from nltk.stem import WordNetLemmatizer
-from nltk.stem.porter import PorterStemmer
 import json
 import scipy.stats as scipy_stats
 import scipy.optimize as sco
+from utilities import Preprocess
 
-############################################
-excluded_characters = set(string.punctuation)
-if config.do_lemmatize:
-    wordnet_lemmatizer =  WordNetLemmatizer()
-if config.do_stemming:
-    stemmer = PorterStemmer() 
-global_english_stopwords = []
+preprocess = Preprocess()
 
-############################################
-# Utility functions
-
-def loadInit():
-    global global_english_stopwords
-    global_english_stopwords = stopwords.words('english')
-    
-def getLemmatized(word):
-    return wordnet_lemmatizer.lemmatize(word)
-    
-def getStemmed(word):
-    return stemmer.stem(word)
-
-def ascii_only(s):
-    ret = ""
-    for ch in s:
-        if ord(ch)<=128:
-            ret =  ret + ch
-    return ret
-
-def removePuntuation(s):
-    return ''.join([ch for ch in s if ch not in excluded_characters])
-
-def getBigrams(words_list):
-    m = len(words_list)
-    i=0
-    bigrams = []
-    while i<m-1:
-        bigrams.append(words_list[i] + " " + words_list[i+1])
-        i = i+1
-    return bigrams
-    
-def getTrigrams(words_list):
-    m = len(words_list)
-    i = 0
-    trigrams = []
-    while i<m-2:
-        trigrams.append(words_list[i] + " " + words_list[i+1] + " " + words_list[i+2])    
-        i = i+1
-    return trigrams
-    
 ################################################
 #CONTEXT
 def getContext(surroundingTokens):
@@ -70,7 +22,7 @@ def getContext(surroundingTokens):
     ret = {}
     ctr = 0
     for i,token in enumerate(surroundingTokens):
-        if token not in global_english_stopwords:
+        if token not in preprocess.global_english_stopwords:
             if token not in ret:
                 ret[token] = 0
             ret[token] += 1
@@ -96,11 +48,6 @@ def getRelatednessScore(contextp, contextq):
             qk.append(contextq[token] + defaultValue)
         else:
             qk.append(defaultValue)
-    '''print pk
-    print qk
-    print scipy_stats.entropy(pk, qk)
-    print ""
-    '''
     return 1.0*scipy_stats.entropy(pk, qk)
 
 
@@ -163,7 +110,6 @@ def getSelection(relatednessScore, alpha, budget):
 
 def main():
 
-    loadInit()
     k = 5
     
     seedText = getSeedText()
@@ -180,22 +126,9 @@ def main():
       if i==2500:
           break
     mm=21
-    ##print relatednessScore[0:mm]
     selection = getSelection( relatednessScore = relatednessScore, alpha = 1.5, budget = 150 )
-    '''resText = [allText[i] for i,v in enumerate(selection) if v==1 and i<10]
-    print ' '.join(resText)
-    print allText[0:10]
-    print selection
-    print config.alpha
-    '''
     m = len(relatednessScore)
-    #print selection[0:m]
-    ##print selection[0:mm]
-    ##print selection[mm:2*mm-1]
     sel = [i for i,val in enumerate(selection) if (val==1 and i<m)]
-    ##print sel
-    ##sel2 = [i for i,val in enumerate(selection) if (val==1 and i>=m)]
-    ##print sel2
     
     t = []
     for seli in sel:
