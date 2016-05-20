@@ -2,45 +2,41 @@ import config
 import string
 from nltk.stem import WordNetLemmatizer
 from nltk.stem.porter import PorterStemmer
+from nltk.corpus import stopwords
 
 class Preprocess:
   wordnet_lemmatizer = ""
   stemmer = ""
-  global_english_stopwords = ""
+  global_english_stopwords = []
   
   def __init__(self):
-    self.data = []
-    excluded_characters = set(string.punctuation)
+    self.excluded_characters = set(string.punctuation)
     if config.do_lemmatize:
-        wordnet_lemmatizer =  WordNetLemmatizer()
+        self.wordnet_lemmatizer =  WordNetLemmatizer()
     if config.do_stemming:
-        stemmer = PorterStemmer() 
-    global_english_stopwords = []
+        self.stemmer = PorterStemmer() 
+    self.global_english_stopwords = stopwords.words('english')
   
   ############################################
   # Utility functions
-  
-  def loadInit():
-      global global_english_stopwords
-      global_english_stopwords = stopwords.words('english')
       
-  def getLemmatized(word):
-      return wordnet_lemmatizer.lemmatize(word)
+  def getLemmatized(self,word):
+      return self.wordnet_lemmatizer.lemmatize(word)
       
-  def getStemmed(word):
-      return stemmer.stem(word)
+  def getStemmed(self,word):
+      return self.stemmer.stem(word)
   
-  def ascii_only(s):
+  def ascii_only(self,s):
       ret = ""
       for ch in s:
           if ord(ch)<=128:
               ret =  ret + ch
       return ret
   
-  def removePuntuation(s):
+  def removePuntuation(self,s):
       return ''.join([ch for ch in s if ch not in excluded_characters])
   
-  def getBigrams(words_list):
+  def getBigrams(self,words_list):
       m = len(words_list)
       i=0
       bigrams = []
@@ -49,7 +45,7 @@ class Preprocess:
           i = i+1
       return bigrams
       
-  def getTrigrams(words_list):
+  def getTrigrams(self,words_list):
       m = len(words_list)
       i = 0
       trigrams = []

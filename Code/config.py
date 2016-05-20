@@ -12,5 +12,5 @@ context_opts = ['contextBothSideDoc','contextLeft','contextRight']
 context_opt = context_opts[0]
 alpha = 10.0
 
-dataFileSource = "data.txt"
+dataFileSrc = "../../data.txt"
 #------------------------------------------------------------------------------------------------------------------------------------------
