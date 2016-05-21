@@ -138,6 +138,3 @@ class GemExpansion:
       for seli in sel:
         t.append(allText[seli])
       print t
-  
-gem_expansion = GemExpansion()
-gem_expansion.main()
