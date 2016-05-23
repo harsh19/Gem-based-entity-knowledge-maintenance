@@ -12,6 +12,7 @@ def main(argv):
   halfBudget = False
   useMMR = False
   seedFile = ''
+  print argv
   try:
     opts, args = getopt.getopt(argv,"hmi:o:s:",["ifile=","ofile=","alpha=","context="])
   except getopt.GetoptError:
@@ -26,10 +27,13 @@ def main(argv):
       config.alpha = arg
     elif opt in ("-i", "--ifile"):
       inputFile = arg
+      config.dataFileSrc = arg
     elif opt in ("-o", "--ofile"):
       outputFile = arg
+      config.outputFile = outputFile
     elif opt == '-s':
       seedFile = arg
+      config.seedFile = seedFile
     elif opt == 'context':
       if arg=='left':
         config.context_opt = context_opts[1]
@@ -38,11 +42,16 @@ def main(argv):
       elif arg == 'right':
         config.context_opt = context_opts[2]
       else:
-        print "Wrong argument value for 'context': Argument value has to be 'left','right', or 'center'"
+        print "ERROR: Wrong argument value for 'context': Argument value has to be 'left','right', or 'center'"
+        sys.exit(2)
+        
   print 'Input file is ', inputFile
   print 'Output file is ', outputFile
   print 'MMR is set to ', useMMR
   print 'halfBudget is set to ', halfBudget
+  
+  config.halfBudget = halfBudget
+  config.useMMR = useMMR
   
   if seedFile=='':
     print "seedFile has to be provided"
@@ -54,7 +63,6 @@ def main(argv):
   gem_expansion = GemExpansion()
   gem_expansion.main()
 
-  
 
 if __name__ == "__main__":
    main(sys.argv[1:])

@@ -55,8 +55,8 @@ class GemExpansion:
   
   ##############################################
   
-  def getSeedText(self):
-      return "price Pricing of cloud and licenses license".lower().split(' ')
+  def getSeedText(self,txt):
+      return txt.lower().split(' ')
   
   def getAllText(self):
       data = (' '.join(open(config.dataFileSrc,'r').readlines())).replace('\n',' ')
@@ -113,12 +113,9 @@ class GemExpansion:
   ##############################################
   
   def main(self):
-  
       k = 5
-      
-      seedText = self.getSeedText()
-      seedTextContext = self.getContext(seedText)
-      
+      mm=21
+      seedTexts = open(config.seedText,"r").readlines()
       allText = self.getAllText()
       lengthAllText = len(allText)
       tokensContext = [] #[0]*lengthAllText
@@ -129,12 +126,13 @@ class GemExpansion:
         relatednessScore.append( self.getRelatednessScore( tokensContext[i], seedTextContext ) )
         if i==2500:
             break
-      mm=21
-      selection = self.getSelection( relatednessScore = relatednessScore, alpha = 1.5, budget = 150 )
-      m = len(relatednessScore)
-      sel = [i for i,val in enumerate(selection) if (val==1 and i<m)]
-      
-      t = []
-      for seli in sel:
-        t.append(allText[seli])
-      print t
+      for seedText in seedTexts:
+        seedText = slef.getSeedText(seedText)
+        seedTextContext = self.getContext(seedText)
+        selection = self.getSelection( relatednessScore = relatednessScore, alpha = 1.5, budget = 150 )
+        m = len(relatednessScore)
+        sel = [i for i,val in enumerate(selection) if (val==1 and i<m)]
+        t = []
+        for seli in sel:
+          t.append(allText[seli])
+        print t
