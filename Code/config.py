@@ -14,7 +14,7 @@ alpha = 10.0
 useMMR = False
 halfBudget = False
 
-dataFileSrc = "data.txt"
-seedFile = "seed.txt"
-outputFile = "output.txt"
+dataFileSrc = "../../data.txt"
+seedFile = "../seed.txt"
+outputFile = "../output.txt"
 #------------------------------------------------------------------------------------------------------------------------------------------

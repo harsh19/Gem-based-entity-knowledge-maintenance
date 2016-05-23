@@ -89,7 +89,7 @@ class GemExpansion:
       tmp1 = [x[i]*relatednessScore[i] for i in range(0,m)]
       tmp2 = [x[i]*alpha for i in range(m,2*m-1)]
       tmp1.extend(tmp2)
-      print tmp1
+      #print tmp1
       prob += lpSum(tmp1) 
        
       # solve the problem
@@ -115,7 +115,7 @@ class GemExpansion:
   def main(self):
       k = 5
       mm=21
-      seedTexts = open(config.seedText,"r").readlines()
+      seedTexts = open(config.seedFile,"r").readlines()
       allText = self.getAllText()
       lengthAllText = len(allText)
       tokensContext = [] #[0]*lengthAllText
@@ -123,16 +123,44 @@ class GemExpansion:
       print len(allText)
       for i,token in enumerate(allText):
         tokensContext.append( self.getContext( allText[max(0,i-k):min(lengthAllText,i+k+1)] ) )
-        relatednessScore.append( self.getRelatednessScore( tokensContext[i], seedTextContext ) )
         if i==2500:
             break
-      for seedText in seedTexts:
-        seedText = slef.getSeedText(seedText)
+      i = 0
+      lim = len(seedTexts)
+      if lim%2 != 0:
+        print "ERROR: Wrong format for seed.txt"
+        sys.exit(2)
+      fw = open(config.outputFile,"w")
+      print " ::::::::::::::::::::::::::::::::: "
+      while i<lim:
+        print " i = .... ",i
+        seedText = seedTexts[i].replace('\n','')
+        print "seedText  ",seedText
+        i+=1
+        try:
+          budget = int(seedTexts[i].replace('\n',''))
+        except:
+          print "ERROR while processing seedTexts.txt : Terminating..."
+          sys.exit(2)
+        print "budget = ",budget
+        i+=1
+        #try:
+        seedText = self.getSeedText(seedText)
         seedTextContext = self.getContext(seedText)
-        selection = self.getSelection( relatednessScore = relatednessScore, alpha = 1.5, budget = 150 )
+        relatednessScore = [] #[0]*lengthAllText
+        for j,token in enumerate(allText):
+          relatednessScore.append( self.getRelatednessScore( tokensContext[j], seedTextContext ) )
+          if j==2500:
+              break
+        selection = self.getSelection( relatednessScore = relatednessScore, alpha = config.alpha, budget = budget )
         m = len(relatednessScore)
         sel = [i for i,val in enumerate(selection) if (val==1 and i<m)]
         t = []
         for seli in sel:
           t.append(allText[seli])
         print t
+        #fw.write(t)
+        #fw.write("-------------------------------\n")
+        #except:
+        #  print "ERROR: Skipping this seedtext..."
+      fw.close()

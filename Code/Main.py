@@ -4,7 +4,7 @@ import sys, getopt
 from gemExpansionPulp import GemExpansion
 import config
 
-usage = "python Main.py -s <seedFile> -i <inputFile> [-h] [-m] [-o <outputFile>] [--alpha <alphaValue>] [--context {left,center,right}]"
+usage = "python Main.py -s <seedFile> -i <inputFile> [-h] [-m] [-o <outputFile>] [--alpha <alphaValue>] [--context <left|center|right>]"
 
 def main(argv):
   inputFile = 'data.txt'
