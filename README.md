@@ -6,11 +6,11 @@ Usage: <br>
 -> python Main.py -s <seedFile> -i <inputFile> [-h] [-m] [-o <outputFile>] [--alpha <alphaValue>] [--context <left|center|right>] <br>
 
 s: Compulsory parameter <br>
-<seedFile> : Path of seed file. If there are m inputs, there will be 2*m lines. For each input, first line contains the seed text, which is a list of space separated words. Second line contains budget, which is a positive integer <br>
+&lt seedFile &gt : Path of seed file. If there are m inputs, there will be 2*m lines. For each input, first line contains the seed text, which is a list of space separated words. Second line contains budget, which is a positive integer <br>
 <br>
 
 i: Compulsory parameter <br>
-<inputFile> : Path of data file. Contains the repository of text <br>
+&lt inputFile &gt : Path of data file. Contains the repository of text <br>
 <br>
 
 m: To ensure diversity among text portions (gems), MMR (Maximal Marginal Relevance) based idea is used. Firstly, gems are extracted for twice the required budget. Thereafter, relevance score of a gem is made equal to the Jaccard similarity of gem with the seed text. Overlap among gems is also calculated based on Jaccard similarity. Finally, MMR is employed to select a subset of extracted gems. <br>
