@@ -3,6 +3,7 @@ import string
 from nltk.stem import WordNetLemmatizer
 from nltk.stem.porter import PorterStemmer
 from nltk.corpus import stopwords
+import nltk
 
 class Preprocess:
   wordnet_lemmatizer = ""
@@ -53,4 +54,30 @@ class Preprocess:
           trigrams.append(words_list[i] + " " + words_list[i+1] + " " + words_list[i+2])    
           i = i+1
       return trigrams
+      
+  def getTokens(self, s):
+      s_tokens = nltk.word_tokenize(s)
+      s_tokens = [preProcess(token) for token in s_tokens]
+      s_tokens = [str(token) for token in s_tokens if len(token)>0]
+      return s_tokens
+      
+  ########################################
+  
+  # using jaccard copefficient after removing stopwords
+  def getSimilarity(self,s1,s2):
+      cmn = 0
+      ln1 = 0
+      ln2 = 0
+      s1 = set([w for w in s1 if w not in self.global_english_stopwords])
+      s2 = set([w for w in s1 if w not in self.global_english_stopwords])
+      num = 1+1.0*len(s1 & s2)
+      den = 1+1.0*len(s1 | s2)
+      return num/den
+      
+      
+
+      
+      
+  
+  
     

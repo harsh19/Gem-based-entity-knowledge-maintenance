@@ -21,6 +21,7 @@ def main(argv):
   for opt, arg in opts:
     if opt == '-h':
       halfBudget = True
+      print "h option is not suppoerted yet"
     elif opt== '-m':
       useMMR = True
     elif opt== '--alpha':
@@ -61,7 +62,7 @@ def main(argv):
     sys.exit(2)
     
   gem_expansion = GemExpansion()
-  gem_expansion.main()
+  gem_expansion.main(useMMR)
 
 
 if __name__ == "__main__":
