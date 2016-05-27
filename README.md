@@ -10,7 +10,7 @@ s: Compulsory parameter <br>
 <br>
 
 i: Compulsory parameter <br>
-&lt inputFile &gt : Path of data file. Contains the repository of text <br>
+&#60; &#60 inputFile &gt : Path of data file. Contains the repository of text <br>
 <br>
 
 m: To ensure diversity among text portions (gems), MMR (Maximal Marginal Relevance) based idea is used. Firstly, gems are extracted for twice the required budget. Thereafter, relevance score of a gem is made equal to the Jaccard similarity of gem with the seed text. Overlap among gems is also calculated based on Jaccard similarity. Finally, MMR is employed to select a subset of extracted gems. <br>
